@@ -1,0 +1,84 @@
+table {
+  counter-reset: rowNumber;
+}
+
+th {
+  background: #ddd !important;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  border-top: 1px solid #ddd !important;
+}
+
+table tr {
+  counter-increment: rowNumber;
+}
+
+table tr td:first-child::before {
+  content: counter(rowNumber);
+  min-width: 1em;
+  margin-right: 0.5em;
+}
+
+.pagination {
+  margin-top: 25px;
+}
+.pagination span {
+  cursor: pointer;
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  border: 1px solid #ddd;
+}
+
+.pagination span.active {
+  background-color: #0099ff;
+  color: white;
+  border: 1px solid #0099ff;
+}
+
+.y {
+  width: 65%;
+  background-color: #d91b60;
+  color: #ffff;
+  padding: 10px 1px;
+  margin: 4px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.y:hover {
+  background-color: green;
+  color: #ffff;
+}
+
+.pagination {
+  margin: 0px !important;
+}
+
+.y2 {
+  width: 16%;
+  background-color: #4caf50;
+  color: #ffff;
+  padding: 10px 1px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.y2:hover {
+  background-color: red;
+  color: #ffff;
+}
+
+.txt2 {
+  color: #00c0ef;
+  font-size: medium;
+}

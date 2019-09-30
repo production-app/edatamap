@@ -236,7 +236,7 @@ class Body extends Component {
    `
     };
 
-    fetch("http://localhost:8888/graphql", {
+    fetch("https://edmserver.herokuapp.com/graphql", {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -303,7 +303,7 @@ class Body extends Component {
       `
     };
 
-    fetch("http://localhost:8888/graphql", {
+    fetch("https://edmserver.herokuapp.com/graphql", {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -351,7 +351,7 @@ class Body extends Component {
       `
     };
 
-    fetch("http://localhost:8888/graphql", {
+    fetch("https://edmserver.herokuapp.com/graphql", {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -422,7 +422,7 @@ class Body extends Component {
       `
     };
 
-    fetch("http://localhost:8888/graphql", {
+    fetch("https://edmserver.herokuapp.com/graphql", {
       method: "POST",
       headers: {
         "content-type": "application/json"

@@ -58,7 +58,7 @@ class Sigin extends Component {
         break;
     }
 
-    this.setState({ formError, [name]: value }, () => console.log(this.state));
+    this.setState({ formError, [name]: value });
     // console.log(name, " - ", value);
   };
 

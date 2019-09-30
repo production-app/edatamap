@@ -70,8 +70,7 @@ class GoogleBody extends Component {
     file: "",
     shows: false,
     progresss: false,
-    completed: 0,
-    errors: {}
+    completed: 0
   };
 
   _handleImageChange(e) {
@@ -82,6 +81,8 @@ class GoogleBody extends Component {
     let lat;
     let long;
     let title;
+    let nodeType;
+    let locations;
 
     Papa.parse(file, {
       header: true,
@@ -92,6 +93,8 @@ class GoogleBody extends Component {
           lat = parseFloat(row.Lat);
           long = parseFloat(row.Long);
           title = row.Name;
+          nodeType = row.NodeType;
+          locations = row.Location;
 
           // console.log(volume);
 
@@ -100,7 +103,7 @@ class GoogleBody extends Component {
           const result = {
             query: `   
        mutation {
-       createEvents( title: "${title}"  eventCause: "Apapa" location: "Festac"  lat: ${lat}  long: ${long}  ) {
+       createEvents( title: "${title}"  eventCause: "${nodeType}" location:"${locations}"   lat: ${lat}  long: ${long}  ) {
         title
          long
          lat
@@ -119,12 +122,12 @@ class GoogleBody extends Component {
             .then(res => {
               return res.json();
             })
-            .then(resdata => {
-              console.log(resdata);
+            .then(({ data }) => {
+              console.log(data);
             })
             .catch(err => {
-              this.setState({ errors: err });
-              console.log(err);
+              // this.setState({ bio: false });
+              // console.log(err);
             });
         });
       }
@@ -200,8 +203,7 @@ class GoogleBody extends Component {
       .then(resdata => {
         // console.log(resdata);
         this.setState({
-          markers: resdata.data.EventList.allEvents,
-          show: "HH"
+          markers: resdata.data.EventList.allEvents
         });
       })
       .catch(err => {
@@ -210,7 +212,7 @@ class GoogleBody extends Component {
   }
 
   render() {
-    const { markers, shows } = this.state;
+    const { markers, shows, bio } = this.state;
     return (
       <div className="content-wrapper">
         {/* Content Header (Page header) */}
@@ -353,7 +355,7 @@ class GoogleBody extends Component {
                 <Map
                   center={{ lat: 6.45041, lng: 3.43533 }}
                   markers={markers}
-                  zoom={15}
+                  zoom={16}
                   googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHs4Jwbs2CoI7u8NujfRVr4GkWR7cSPbg&libraries=drawing"
                   loadingElement={<div style={{ height: `100%` }} />}
                   containerElement={<div style={{ height: `600px` }} />}

@@ -1,5 +1,6 @@
-/* global google */
 import React, { Component, useState } from "react";
+import "./modal.css";
+import ReactModal from "react-modal-resizable-draggable";
 import {
   withScriptjs,
   withGoogleMap,
@@ -8,92 +9,74 @@ import {
   InfoWindow
 } from "react-google-maps";
 
-import { DrawingManager } from "react-google-maps/lib/components/drawing/DrawingManager";
-import ReactDynamicModal from "react-draggable-resizable-modal";
-const x = [];
-class Map extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false,
-      path: [],
-      paths: [],
-      markers: [],
-      show: ""
-    };
+const Maps = props => {
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  // console.log(props);
+  const { markers, show } = props;
+  //console.log(show);
 
-    this.shapes = [];
-    this.handleOverlayComplete = this.handleOverlayComplete.bind(this);
-    this.deleteShapes = this.deleteShapes.bind(this);
-  }
+  //console.log(markers);
+  return (
+    <GoogleMap defaultZoom={13} defaultCenter={{ lat: 6.45041, lng: 3.43533 }}>
+      {markers.map(point => (
+        // console.log(point.title),
+        <Marker
+          key={point._id}
+          position={{
+            lat: parseFloat(point.lat),
+            lng: parseFloat(point.long) //"dist/img/Pole2.png",
+          }}
+          onClick={() => {
+            setSelectedEvent(point);
+          }}
+          icon={{
+            url:
+              point.eventCause == "Handhole"
+                ? "dist/img/MST.png"
+                : "dist/img/Pole2.png",
+            scaledSize: new window.google.maps.Size(30, 30)
+          }}
+        />
+      ))}
 
-  openModal = () => {
-    this.setState({ isOpen: true });
-  };
-  closeModal = () => {
-    this.setState({ isOpen: false });
-  };
+      {selectedEvent && (
+        <InfoWindow
+          position={{
+            lat: parseFloat(selectedEvent.lat),
+            lng: parseFloat(selectedEvent.long)
+          }}
+          onCloseClick={() => {
+            setSelectedEvent(null);
+          }}
+        >
+          <div>
+            <h6> {selectedEvent.title} </h6>
+            <p> {selectedEvent.location}</p>
+          </div>
+        </InfoWindow>
+      )}
+    </GoogleMap>
+  );
+  // console.log(props);
+};
 
-  handleOverlayComplete(e) {
-    const shape = e.overlay;
-    shape.type = e.type;
+const WrappedMap = withScriptjs(withGoogleMap(Maps));
 
-    //const pos = shape.getPosition()
-
-    const shap = e.type;
-
-    console.log(e.type);
-
-    google.maps.event.addListener(shape, "click", () => {
-      this.toggleSelection(shape);
-    });
-    this.toggleSelection(shape);
-    this.shapes.push(shape);
-  }
-
-  toggleSelection(shape) {
-    //if (shape.getEditable() === true) shape.setEditable(false);
-    // else shape.setEditable(true);
-  }
-
-  deleteShapes() {
-    this.shapes.forEach(shape => shape.setMap(null));
-  }
-
-  getPaths = polyline => {
-    var coordinates = polyline
-      .getPath()
-      .getArray()
-      .toString();
-    // console.log(coordinates[1]);
-    console.log(coordinates);
-    //  console.log(coordinates.length);
-    //console.log(x.replace(]));
-    //const y = coordinates.split();
-    this.setState({ path: coordinates });
+class GoogleBody extends Component {
+  state = {
+    markers: [],
+    show: [],
+    shows: [],
+    modalIsOpen: false
   };
 
-  savePath = () => {
-    const result = {
-      query: `   
-     
-       `
-    };
-
-    fetch("https://edmserver.herokuapp.com/graphql", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(result)
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(resdata => {
-        console.log(resdata);
-      })
-      .catch(err => console.log(err));
+  openModal = e => {
+    e.preventDefault();
+    this.setState({ modalIsOpen: true });
+  };
+  closeModal = e => {
+    e.preventDefault();
+    this.setState({ modalIsOpen: false });
   };
 
   componentDidMount() {
@@ -103,7 +86,7 @@ class Map extends Component {
     script.async = true;
     document.body.appendChild(script);
 
-    document.title = " <eDM/> | eDataMaps  ";
+    document.title = " <eDM/> | eData Map  ";
     const result = {
       query: `
             query {
@@ -127,7 +110,7 @@ class Map extends Component {
             `
     };
 
-    fetch("https://edmserver.herokuapp.com/graphql", {
+    fetch("http://localhost:8888/graphql", {
       method: "POST",
       headers: {
         "content-type": "application/json"
@@ -138,58 +121,41 @@ class Map extends Component {
         return res.json();
       })
       .then(resdata => {
-        // console.log(resdata);
-        this.setState({
-          markers: resdata.data.EventList.allEvents,
-          show: "HH"
-        });
+        //console.log(resdata);
+        for (let i = 0; i < resdata.data.EventList.allEvents.length; i++) {
+          //console.log(i);
+
+          let e;
+
+          e += resdata.data.EventList.allEvents[i].eventCause + ",";
+
+          this.setState({
+            markers: resdata.data.EventList.allEvents,
+            show: this.state.shows
+          });
+        }
+        // console.log(this.state.show);
       })
+
       .catch(err => {
         throw err;
       });
   }
 
   render() {
-    const { markers, show } = this.state;
-
+    const { markers } = this.state;
     return (
-      <div>
-        <GoogleMap
-          //onClick={this.deleteShapes}
-          defaultZoom={this.props.zoom}
-          defaultCenter={this.props.center}
-        >
-          {console.log(this.markers)}
-          {markers.map(point => (
-            // console.log(point.title),
-            <Marker
-              key={point._id}
-              position={{
-                lat: parseFloat(point.lat),
-                lng: parseFloat(point.long) //"dist/img/Pole2.png",
-              }}
-              icon={{
-                url: show === "HH" ? "dist/img/MST.png" : "dist/img/Pole2.png",
-                scaledSize: new window.google.maps.Size(25, 25)
-              }}
-            />
-          ))}
-          <DrawingManager
-            defaultDrawingMode={google.maps.drawing.OverlayType.POLYLINE}
-            defaultOptions={{
-              drawingControl: true,
-              drawingControlOptions: {
-                position: google.maps.ControlPosition.TOP_CENTER
-                //drawingModes: [google.maps.drawing.OverlayType.POLYLINE]
-              }
-            }}
-            //onOverlayComplete={this.handleOverlayComplete}
-            onPolylineComplete={value => console.log(this.getPaths(value))}
-          />
-        </GoogleMap>
+      <div className="">
+        <WrappedMap
+          markers={markers}
+          // show={shows}
+          googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCHs4Jwbs2CoI7u8NujfRVr4GkWR7cSPbg`}
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `600px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+        />
       </div>
     );
   }
 }
-
-export default withScriptjs(withGoogleMap(Map));
+export default GoogleBody;

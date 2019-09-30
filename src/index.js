@@ -19,7 +19,7 @@ import {
 } from "react-router-dom";
 
 const client = new ApolloClient({
-  uri: "https://edmserver.herokuapp.com/graphql",
+  uri: "http://localhost:8888/graphql",
   //uri: "http://d36073e0.ngrok.io/graphql",
 
   fetchOptions: {

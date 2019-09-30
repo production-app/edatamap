@@ -111,7 +111,7 @@ class Signup extends Component {
         break;
     }
 
-    this.setState({ formError, [name]: value }, () => console.log(this.state));
+    this.setState({ formError, [name]: value });
     // console.log(name, " - ", value);
   };
 
@@ -138,7 +138,10 @@ class Signup extends Component {
                   onSubmit={event => this.submitHandler(event, SignupUser)}
                 >
                   {data && (
-                    <div className="alert alert-success alert-dismissible">
+                    <div
+                      className="alert alert-success alert-dismissible"
+                      style={{ marginTop: "-24px" }}
+                    >
                       <NavLink
                         to="/login"
                         className="close"
@@ -191,8 +194,11 @@ class Signup extends Component {
                       <strong>
                         {" "}
                         <span className="glyphicon glyphicon-remove-sign" />{" "}
+                        {""}
+                        {error.graphQLErrors.map(x => x.message) ||
+                          "Invalid Details"}{" "}
+                        {"  "}
                       </strong>
-                      Error
                     </div>
                   )}
                   <div

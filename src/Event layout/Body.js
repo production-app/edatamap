@@ -236,6 +236,8 @@ class Body extends Component {
    `
     };
 
+    //"https://edmserver.herokuapp.com/graphql"
+
     fetch("https://edmserver.herokuapp.com/graphql", {
       method: "POST",
       headers: {
@@ -936,18 +938,33 @@ class Body extends Component {
         <div className="modal modal-info2 fade" id="modal-info2">
           <div className="modal-dialog">
             <div className="modal-content">
-              <div className="modal-header">
-                <a
-                  to={"/login"}
+              <div
+                className="modal-header"
+                style={{ borderBottomColor: "#d91b60" }}
+              >
+                <button
                   type="button"
                   className="close"
                   data-dismiss="modal"
                   aria-label="Close"
-                  href="/"
                 >
                   <span aria-hidden="true">×</span>
-                </a>
-                <h4 className="modal-title">View Event Details </h4>
+                </button>
+                <img
+                  src="dist/img/edatamap_logo.png"
+                  className="img-circle"
+                  width="30px"
+                  height="30px"
+                  alt="User "
+                  style={{ width: "34px", display: "inline-block" }}
+                />
+                <h4
+                  className="modal-title"
+                  style={{ display: "inline-block", margin: "6px" }}
+                >
+                  {"   "}
+                  <strong>Update Logs</strong>
+                </h4>
               </div>
               <div className="modal-body">
                 <form role="form" onSubmit={this.clicks}>
@@ -1074,15 +1091,6 @@ class Body extends Component {
                     </button>
                   </div>
                 </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-outline pull-left"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
               </div>
             </div>
             {/* /.modal-content */}

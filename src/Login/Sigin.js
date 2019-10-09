@@ -138,7 +138,8 @@ class Sigin extends Component {
                           className="glyphicon glyphicon-ok
 "
                         />{" "}
-                        Successful !. Please the click Close button to login
+                        Successful ! Kindly <em> PUSH ! </em> the Close Button
+                        to Login
                       </strong>{" "}
                     </div>
                   )}

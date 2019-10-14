@@ -93,7 +93,8 @@ const initalState = {
   counts: "",
   page: "",
   todos: [],
-  gecoder: ""
+  gecoder: "",
+  search: ""
 };
 
 const formatDate = date => {
@@ -281,6 +282,11 @@ class Body extends Component {
         console.error(error);
       }
     );
+  };
+
+  SearchText = e => {
+    this.setState({ search: e.target.value });
+    //console.log(this.state.search);
   };
 
   handleDelete = (event, parameter) => {
@@ -475,7 +481,6 @@ class Body extends Component {
       location,
       eventCause,
       eventValue,
-      todos,
       labelling,
       updates,
       counts,
@@ -487,9 +492,10 @@ class Body extends Component {
       isNextBtnActive,
       totalPages
     } = this.state;
+    let todos = this.state.todos;
     const indexOfLastTodo = currentPage * todosPerPage;
     const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
-    const currentTodos = todos.slice(indexOfFirstTodo, indexOfLastTodo);
+    let currentTodos = todos.slice(indexOfFirstTodo, indexOfLastTodo);
     const lat = +this.state.lat;
     const long = +this.state.long;
     const Perpage = 10;
@@ -498,7 +504,15 @@ class Body extends Component {
     //const Pages = 0 || 1;
     const count = Math.ceil(counts / Perpage);
 
-    const renderTodos = currentTodos.map((todo, index) => {
+    let search = this.state.search;
+
+    if (search.length > 0) {
+      currentTodos = currentTodos.filter(function(todo) {
+        return todo.location.toLowerCase().match(search);
+      });
+    }
+
+    let renderTodos = currentTodos.map((todo, index) => {
       return (
         <tr key={todo._id}>
           <td>
@@ -508,7 +522,7 @@ class Body extends Component {
           <td> {todo.title} </td>
           <td> {todo.location} </td>
           <td> {todo.eventCause} </td>
-          <td> {todo.labelling}</td>
+          <td> {todo.labelling} </td>
 
           <td>
             {" "}
@@ -725,21 +739,46 @@ class Body extends Component {
               <div className="col-md-12">
                 <div className="box">
                   <div className="box-header with-border">
-                    <h3 className="box-title">
-                      <span className="glyphicon glyphicon-pencil" /> Log Table{" "}
-                      {"      "}{" "}
-                      <Button
-                        type="button"
-                        className="btn btn-info"
-                        data-toggle="modal"
-                        data-target="#modal-default"
+                    <div className="col-md-7">
+                      <h3 className="box-title">
+                        <span className="glyphicon glyphicon-pencil" /> Log
+                        Table {"      "} {"        "}
+                        <Button
+                          type="button"
+                          className="btn btn-warning"
+                          data-toggle="modal"
+                          data-target="#modal-default"
+                        >
+                          <i
+                            className="fa fa-location-arrow "
+                            aria-hidden="true"
+                          >
+                            {" "}
+                            CREATE
+                          </i>
+                        </Button>
+                      </h3>
+                    </div>
+                    <div className="col-md-5" style={{ display: "flex" }}>
+                      <p
+                        style={{
+                          padding: "9px",
+                          fontWeight: 700,
+                          display: "inline"
+                        }}
                       >
-                        <i className="fa fa-location-arrow" aria-hidden="true">
-                          {" "}
-                          CREATE
-                        </i>
-                      </Button>
-                    </h3>
+                        Search:{" "}
+                      </p>{" "}
+                      <input
+                        className="form-control"
+                        type="search"
+                        placeholder="Location"
+                        onChange={this.SearchText}
+                        value={search}
+                        style={{ width: "80%" }}
+                      />{" "}
+                    </div>
+
                     <div className="box-tools pull-right">
                       <button
                         type="button"
@@ -786,58 +825,52 @@ class Body extends Component {
                     <div className="row">
                       <div className="col-md-12">
                         <div className="table-responsive">
-                          <Query query={EVENT_LISTS}>
-                            {({ data, loading, error }) => {
-                              if (loading) return <div> Loading...</div>;
-                              //if (!data) return <div> No Data</div>;
+                          <React.Fragment>
+                            <div className="table-responsive">
+                              <table className="table table-hover">
+                                <tbody>
+                                  <tr>
+                                    <th style={{ width: "0%" }}>S/N</th>
+                                    <th style={{ width: "1%" }}>Name</th>
+                                    <th style={{ width: "1%" }}>Location</th>
+                                    <th>Node_Type</th>
+                                    <th style={{ width: "0%" }}>Labelling</th>
+                                    <th style={{ width: "0%" }}>
+                                      Creator /Username{" "}
+                                    </th>
+                                    <th style={{ width: "1%" }}>Action(s)</th>
+                                  </tr>
+                                  {renderTodos.length > 0
+                                    ? renderTodos
+                                    : "No Data"}
+                                </tbody>
+                                <tfoot>
+                                  <tr>
+                                    <th>S/N</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Node_Type</th>
+                                    <th>Labelling</th>
+                                    <th>Creator /Username </th>
+                                    <th>Action(s)</th>
+                                  </tr>
+                                </tfoot>
+                              </table>
+                            </div>
+                            <div className="pagination">
+                              <ul className="pagination">
+                                {renderPrevBtn}
+                                {pageDecrementBtn}
+                                {renderPageNumbers}
+                                {pageIncrementBtn}
+                                {renderNextBtn}
+                              </ul>
+                              <br />
+                              <br />
 
-                              //console.log(counts);
-
-                              return (
-                                <React.Fragment>
-                                  <table className="table table-hover">
-                                    <tbody>
-                                      <tr>
-                                        <th>S/N</th>
-                                        <th>Name</th>
-                                        <th>Location</th>
-                                        <th>Node_Type</th>
-                                        <th>Labelling</th>
-                                        <th>Creator /Username </th>
-                                        <th>Action(s)</th>
-                                      </tr>
-                                      {renderTodos.length > 0 || "No Data"}
-                                      {renderTodos}
-                                    </tbody>
-                                    <tfoot>
-                                      <tr>
-                                        <th>S/N</th>
-                                        <th>Name</th>
-                                        <th>Location</th>
-                                        <th>Node_Type</th>
-                                        <th>Labelling</th>
-                                        <th>Creator /Username </th>
-                                        <th>Action(s)</th>
-                                      </tr>
-                                    </tfoot>
-                                  </table>
-                                  <div className="pagination">
-                                    <ul className="pagination">
-                                      {renderPrevBtn}
-                                      {pageDecrementBtn}
-                                      {renderPageNumbers}
-                                      {pageIncrementBtn}
-                                      {renderNextBtn}
-                                    </ul>
-                                    <br />
-                                    <br />
-
-                                    <p>Total items: {counts} </p>
-                                  </div>
-                                </React.Fragment>
-                              );
-                            }}
-                          </Query>
+                              <p>Total items: {counts} </p>
+                            </div>
+                          </React.Fragment>
                         </div>
                       </div>
                     </div>

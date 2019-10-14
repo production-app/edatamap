@@ -142,7 +142,7 @@ class GoogleBody extends Component {
         completed: self.state.completed + diff
       });
 
-      if (self.state.completed > 94.2) {
+      if (self.state.completed > 99.3) {
         window.clearInterval(id);
       }
     }, 900);

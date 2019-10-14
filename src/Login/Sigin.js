@@ -73,7 +73,7 @@ class Sigin extends Component {
       localStorage.setItem("token", data.SiginUser.token);
       await this.props.refetch();
       this.clearState();
-      // this.props.history.push("/");
+      this.props.history.push("/");
     });
     // console.log(this.props.refetch);
   };

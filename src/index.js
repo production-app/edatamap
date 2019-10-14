@@ -86,7 +86,7 @@ const Root = ({ refetch, session }) => (
         {x ? (
           <Route path="/" render={() => <App session={session} />} exact />
         ) : (
-          <Route path="/notfound" component={Unathorization} />
+          <Route path="/login" component={Login} />
         )}
         <Route path="/map" render={() => <GoogleMaps session={session} />} />
         <Route path="/chart" component={Echarts} />
@@ -94,8 +94,6 @@ const Root = ({ refetch, session }) => (
 
         <Route path="/login" render={() => <Login refetch={refetch} />} />
 
-        {x && <Redirect to="/" from="/login" />}
-        {x && <Redirect to="/" from="/login" />}
         {!x && <Redirect from="/" to="/login" />}
       </Switch>
     </React.Fragment>

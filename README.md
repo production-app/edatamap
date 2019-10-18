@@ -8,7 +8,8 @@ The link to the Application [eDataMap](https://edatamap.herokuapp.com/login).
 3. MongoDB
 4. Apollo Client/ Server
 
-**Application Snapshoot**
+<pre> **Application Snapshoot** </pre>
+
 
 ![alt text](https://github.com/production-app/edatamap/blob/master/image1.png)
 

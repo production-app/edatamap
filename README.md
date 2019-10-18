@@ -10,7 +10,7 @@ The link to the Application [eDataMap](https://edatamap.herokuapp.com/login).
 
 **Application Snapshoot**
 
-![alt text](https://ibb.co/D7JS4Lx)
+![alt text](https://github.com/production-app/edatamap/blob/master/image1.png)
 
 ![alt text](https://ibb.co/nr5k0vb)
 

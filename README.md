@@ -1,4 +1,4 @@
-eDataMap - A Geo-spatial Application for gathering physical components (Poles, Cables, Hand-holes) on the field and also tooling for GIS Data Verification, with built-in dashboard designs. Suitable for Telco. providers
+ ![alt text](https://github.com/production-app/edatamap/blob/master/public/dist/img/edatamap_logo.png)  eDataMap - A Geo-spatial Application for gathering physical components (Poles, Cables, Hand-holes) on the field and also tooling for GIS Data Verification, with built-in dashboard designs. Suitable for Telco. providers
 
 The link to the Application [eDataMap](https://edatamap.herokuapp.com/login).
 

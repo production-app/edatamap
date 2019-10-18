@@ -3,6 +3,9 @@ import "./modal.css";
 import ReactModal from "react-modal-resizable-draggable";
 import $ from "jquery";
 import { DrawingManager } from "react-google-maps/lib/components/drawing/DrawingManager";
+import Geosuggest from "react-geosuggest";
+import "./Geosuggust.css";
+
 import {
   withScriptjs,
   withGoogleMap,
@@ -14,6 +17,8 @@ import {
 const Maps = props => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [pathCable, setpathCable] = useState(null);
+  const [lats, setlats] = useState(null);
+  const [longs, setlongs] = useState(null);
   // console.log(props);
   const { markers, show } = props;
   //console.log(show);
@@ -35,70 +40,98 @@ const Maps = props => {
   };
 
   return (
-    <GoogleMap defaultZoom={13} defaultCenter={{ lat: 6.45041, lng: 3.43533 }}>
-      {markers.map(point => (
-        // console.log(point.title),
-        <Marker
-          key={point._id}
-          position={{
-            lat: parseFloat(point.lat),
-            lng: parseFloat(point.long) //"dist/img/Pole2.png",
+    <div>
+      <div
+        style={{
+          position: "absolute",
+          marginTop: "-608px",
+          marginLeft: "567px"
+        }}
+      >
+        <Geosuggest
+          // ref={el => this._geoSuggest = el}
+          placeholder="Start typing!"
+          //initialValue="Hamburg"
+          // fixtures={fixtures}
+          onSuggestSelect={place => {
+            const { lat, lng } = place.location;
+            console.log(lat);
+            setlats(lat);
+            setlongs(lng);
           }}
-          onClick={() => {
-            setSelectedEvent(point);
+          location={new window.google.maps.LatLng(53.558572, 9.9278215)}
+          radius={20}
+        />
+      </div>
+      <GoogleMap
+        defaultZoom={13}
+        defaultCenter={{ lat: 6.45041, lng: 3.43533 }}
+      >
+        {console.log(longs)}
+        {markers.map(point => (
+          // console.log(point.title),
+          <Marker
+            key={point._id}
+            position={{
+              lat: parseFloat(point.lat),
+              lng: parseFloat(point.long) //"dist/img/Pole2.png",
+            }}
+            onClick={() => {
+              setSelectedEvent(point);
+            }}
+            icon={{
+              url:
+                point.eventCause == "Handhole"
+                  ? "dist/img/MST.png"
+                  : "dist/img/Pole2.png",
+              scaledSize: new window.google.maps.Size(30, 30)
+            }}
+          />
+        ))}
+
+        {selectedEvent && (
+          <InfoWindow
+            position={{
+              lat: parseFloat(selectedEvent.lat),
+              lng: parseFloat(selectedEvent.long)
+            }}
+            onCloseClick={() => {
+              setSelectedEvent(null);
+            }}
+          >
+            <div>
+              <h6> {selectedEvent.title} </h6>
+              <p> {selectedEvent.location}</p>
+            </div>
+          </InfoWindow>
+        )}
+
+        <DrawingManager
+          //defaultDrawingMode={google.maps.drawing.OverlayType.POLYLINE}
+          defaultOptions={{
+            drawingControl: true,
+            drawingControlOptions: {
+              position: window.google.maps.ControlPosition.TOP_CENTER
+              //drawingModes: [google.maps.drawing.OverlayType.POLYLINE]
+            }
           }}
-          icon={{
-            url:
-              point.eventCause == "Handhole"
-                ? "dist/img/MST.png"
-                : "dist/img/Pole2.png",
-            scaledSize: new window.google.maps.Size(30, 30)
+          //onOverlayComplete={this.handleOverlayComplete}
+          onPolylineComplete={value => {
+            let polylinePath = value.getPath().getArray();
+            $.each(polylinePath, function(key, latlng) {
+              var lat = latlng.lat();
+              var lon = latlng.lng();
+              let latlong = [];
+              latlong.push(lat, lon);
+              //console.log(latlong);
+              // console.log(`lat: ${lat}, long: ${lon}`);
+              // str_input += lat + ' ' + lon + ',';
+              setpathCable(latlong);
+            });
           }}
         />
-      ))}
-
-      {selectedEvent && (
-        <InfoWindow
-          position={{
-            lat: parseFloat(selectedEvent.lat),
-            lng: parseFloat(selectedEvent.long)
-          }}
-          onCloseClick={() => {
-            setSelectedEvent(null);
-          }}
-        >
-          <div>
-            <h6> {selectedEvent.title} </h6>
-            <p> {selectedEvent.location}</p>
-          </div>
-        </InfoWindow>
-      )}
-
-      <DrawingManager
-        //defaultDrawingMode={google.maps.drawing.OverlayType.POLYLINE}
-        defaultOptions={{
-          drawingControl: true,
-          drawingControlOptions: {
-            //   position: google.maps.ControlPosition.TOP_CENTER
-            //drawingModes: [google.maps.drawing.OverlayType.POLYLINE]
-          }
-        }}
-        //onOverlayComplete={this.handleOverlayComplete}
-        onPolylineComplete={value => {
-          let polylinePath = value.getPath().getArray();
-          $.each(polylinePath, function(key, latlng) {
-            var lat = latlng.lat();
-            var lon = latlng.lng();
-            let latlong = [];
-            latlong.push(lat, lon);
-            //console.log(latlong);
-            // console.log(`lat: ${lat}, long: ${lon}`);
-            // str_input += lat + ' ' + lon + ',';
-            setpathCable(latlong);
-          });
-        }}
-      />
-    </GoogleMap>
+      </GoogleMap>
+    </div>
   );
   // console.log(props);
   {

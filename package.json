@@ -23,6 +23,7 @@
     "react-dom": "^16.8.6",
     "react-draggable-resizable-modal": "^0.1.2",
     "react-geocode": "^0.1.2",
+    "react-geosuggest": "^2.12.0",
     "react-google-maps": "^9.4.5",
     "react-modal-resizable-draggable": "^0.1.2",
     "react-progressbar": "^15.4.1",

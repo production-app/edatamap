@@ -353,10 +353,10 @@ class GoogleBody extends Component {
                   )}
                 </div>
                 <Map
-                  center={{ lat: 6.45041, lng: 3.43533 }}
+                  //center={{ lat: 6.45041, lng: 3.43533 }}
                   markers={markers}
                   zoom={16}
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHs4Jwbs2CoI7u8NujfRVr4GkWR7cSPbg&libraries=drawing"
+                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHs4Jwbs2CoI7u8NujfRVr4GkWR7cSPbg&libraries=geometry,drawing,places"
                   loadingElement={<div style={{ height: `100%` }} />}
                   containerElement={<div style={{ height: `600px` }} />}
                   mapElement={<div style={{ height: `100%` }} />}

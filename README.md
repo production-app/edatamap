@@ -12,6 +12,6 @@ The link to the Application [eDataMap](https://edatamap.herokuapp.com/login).
 
 ![alt text](https://github.com/production-app/edatamap/blob/master/image1.png)
 
-![alt text](https://ibb.co/nr5k0vb)
+![alt text](https://github.com/production-app/edatamap/blob/master/public/dist/img/image%20(1).png)
 
 ![alt text](https://ibb.co/Jrm3V6S)

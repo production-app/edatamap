@@ -2,6 +2,8 @@
 
 The link to the Application [eDataMap](https://edatamap.herokuapp.com/login).
 
+The link to the Documentation [Technical Documentation](http://bit.ly/2OxWb60)
+
 **Stack Use**
 1. ReactJS
 2. NodeJS

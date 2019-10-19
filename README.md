@@ -18,7 +18,7 @@ The link to the Documentation [Technical Documentation](http://bit.ly/2OxWb60)
  
  
 
-**Application Snapshoot 
+**Application Snapshoot**
 
 
 

@@ -10,7 +10,11 @@ The link to the Documentation [Technical Documentation](http://bit.ly/2OxWb60)
 3. MongoDB
 4. Apollo Client/ Server
 
-<pre> **Application Snapshoot** </pre>
+<pre> 
+
+**Application Snapshoot 
+
+</pre>
 
 
 ![alt text](https://github.com/production-app/edatamap/blob/master/image1.png)
